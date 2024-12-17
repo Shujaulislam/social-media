@@ -58,7 +58,7 @@ function Login({ onToggleForm, isVisible }: LoginProps) {
           </button>
         </form>
 
-        <div className="relative mt-8">
+     
           <div className="relative w-full h-14 bg-gray-100 rounded-full p-1">
             <motion.div
               className="absolute top-1 left-1 w-[calc(50%-4px)] h-[calc(100%-8px)] bg-white rounded-full shadow-md"
@@ -85,7 +85,7 @@ function Login({ onToggleForm, isVisible }: LoginProps) {
               </motion.button>
             </div>
           </div>
-        </div>
+      
       </div>
     </motion.div>
   )
