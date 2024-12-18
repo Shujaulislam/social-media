@@ -20,6 +20,31 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app directory (pages and routes)
+├── components/            # Reusable UI components
+├── lib/                   # Core functionality and utilities
+│   ├── context/          # React context providers
+│   │   └── authContext/  # Authentication context and logic
+│   ├── firebase/         # Firebase configuration and setup
+│   └── profile/          # User profile related functionality
+└── middleware.ts         # Next.js middleware for route protection
+
+```
+
+### Directory Overview
+
+- `src/app/`: Contains the main application pages and API routes following Next.js 13+ app directory structure.
+- `src/components/`: Houses all reusable UI components, making the codebase modular and maintainable.
+- `src/lib/`: Core application logic and utilities:
+  - `context/`: React context providers for state management
+  - `firebase/`: Firebase configuration and initialization
+  - `profile/`: User profile management and related functions
+- `src/middleware.ts`: Handles route protection and authentication checks
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
