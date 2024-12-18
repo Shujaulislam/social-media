@@ -26,11 +26,17 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 src/
 ├── app/                    # Next.js app directory (pages and routes)
 ├── components/            # Reusable UI components
+│   ├── auth/             # Authentication related components
+│   ├── ui/              # Common UI components
+│   ├── FeedPosts.tsx    # Feed posts component
+│   ├── LoginButton.tsx  # Login button component
+│   └── post-card.tsx    # Post card component
 ├── lib/                   # Core functionality and utilities
 │   ├── context/          # React context providers
 │   │   └── authContext/  # Authentication context and logic
 │   ├── firebase/         # Firebase configuration and setup
-│   └── profile/          # User profile related functionality
+│   ├── profile/         # User profile related functionality
+│   └── utils.ts         # Utility functions
 └── middleware.ts         # Next.js middleware for route protection
 
 ```
@@ -38,11 +44,15 @@ src/
 ### Directory Overview
 
 - `src/app/`: Contains the main application pages and API routes following Next.js 13+ app directory structure.
-- `src/components/`: Houses all reusable UI components, making the codebase modular and maintainable.
+- `src/components/`: Houses all reusable UI components:
+  - `auth/`: Authentication related components like login forms
+  - `ui/`: Shared UI components like buttons, inputs, etc.
+  - Individual components for specific features (FeedPosts, post cards)
 - `src/lib/`: Core application logic and utilities:
   - `context/`: React context providers for state management
   - `firebase/`: Firebase configuration and initialization
   - `profile/`: User profile management and related functions
+  - `utils.ts`: Common utility functions
 - `src/middleware.ts`: Handles route protection and authentication checks
 
 ## Learn More
