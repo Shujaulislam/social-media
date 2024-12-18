@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
 
   // If the user is not authenticated, redirect to login page
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   // Allow access to authenticated routes

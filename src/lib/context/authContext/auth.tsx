@@ -77,6 +77,7 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
     });
 
       console.log("User document created/updated:", user.email);
+      router.push("/feed");
     } catch (error: any) {
       console.error("Sign-in error:", error.message);
       setError(error.message || "Failed to sign in.");

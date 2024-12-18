@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useAuth } from "@/lib/context/authContext/auth";
 import FeedPosts from "@/components/FeedPosts";
+// import Login from "@/components/auth/Login";
+import LoginButton from "@/components/LoginButton";
 
 
 export default function Feed() {
@@ -36,19 +38,20 @@ export default function Feed() {
           </div>
 
 
-          {/* 
+          
           <button
             className="px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition"
             onClick={handleLogout}
           >
             Logout
-          </button> */}
+          </button>
           <FeedPosts />
         </div>
 
       ) : (
         <div className="text-center">
           <p className="text-lg font-medium">Please log in to access your feed.</p>
+          <LoginButton/>
         </div>
       )}
     </section>
