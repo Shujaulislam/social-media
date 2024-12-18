@@ -21,6 +21,7 @@ interface AuthContextType {
   handleLogout: () => Promise<void>;
 }
 
+
 // Create Auth Context
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -48,8 +49,13 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
 
   // Redirect user to home page if signed in
   useEffect(() => {
-    if (user) router.push("/feed");
-  }, [user, router]);
+    if (user) {
+      router.push("/feed");
+    } else if (!isLoading) {
+      router.push("/");
+    }
+  }, [user, isLoading, router]);
+  
 
   // Handle Google Sign-In
   const handleSignIn = async () => {

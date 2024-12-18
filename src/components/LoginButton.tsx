@@ -35,12 +35,12 @@ export default function LoginButton() {
           <p className="text-sm font-medium">{user.displayName || "User"}</p>
         </Link>
 
-        <button
+        {/* <button
           className="px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition"
           onClick={handleLogout}
         >
           Logout
-        </button>
+        </button> */}
       </div>
     );
   }

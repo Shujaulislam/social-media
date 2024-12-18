@@ -13,6 +13,17 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    container: {
+      center: true, // Centers the container by default
+      padding: {
+        DEFAULT: '1rem', // Default padding for all screen sizes
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+        '2xl': '6rem',
+      },
+    },
+  
   },
   plugins: [],
 } satisfies Config;
