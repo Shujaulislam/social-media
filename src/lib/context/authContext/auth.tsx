@@ -1,5 +1,6 @@
 "use client";
-
+import { setCookie, destroyCookie } from 'nookies';
+import { FirebaseError } from 'firebase/app';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -8,7 +9,7 @@ import {
   User,
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { useRouter } from "next/navigation";;
+import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebse/firebase";
 import { createUser } from "@/lib/profile/authProfile";
 
@@ -68,6 +69,12 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
         email: user.email || "No Email Provided",
         photoURL: user.photoURL || "",
       });
+       // Get Firebase token and save to cookies
+    const token = await user.getIdToken();
+    setCookie(null, "firebaseToken", token, {
+      path: "/",
+      maxAge: 30 * 24 * 60 * 60, // 30 days
+    });
 
       console.log("User document created/updated:", user.email);
     } catch (error: any) {
@@ -84,6 +91,8 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
     try {
       await signOut(auth);
       setUser(null);
+          // Clear the Firebase token cookie
+    destroyCookie(null, "firebaseToken");
       router.push("/");
     } catch (error: any) {
       console.error("Logout error:", error.message);
