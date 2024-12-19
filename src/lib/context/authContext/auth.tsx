@@ -48,9 +48,9 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
   }, []);
 
   // Redirect user to home page if signed in
-  useEffect(() => {
-    if (user) router.push("/feed");
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (user) router.push("/feed");
+  // }, [user, router]);
 
   // Handle Google Sign-In
   const handleSignIn = async () => {

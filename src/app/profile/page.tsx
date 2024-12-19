@@ -4,20 +4,25 @@ import { ArrowLeft, Plus } from 'lucide-react'
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { PostCard } from '@/components/post-card' // this is temporary replace this with actual dynamic post file wherever you are going to create it.
+import Link from 'next/link'
+import { useAuth } from '@/lib/context/authContext/auth'
 
 
 const posts = [
   {
+    id:1,
     title: "Design meet",
     likes: 67,
     imageUrl: "/placeholder.svg?height=400&width=300",
   },
   {
+    id:2,
     title: "Working on a B2B...",
     likes: 40,
     imageUrl: "/placeholder.svg?height=400&width=300",
   },
   {
+    id:3,
     title: "Parachute ❤️",
     likes: 65,
     imageUrl: "/placeholder.svg?height=400&width=300",
@@ -25,9 +30,12 @@ const posts = [
 ]
 
 export default function ProfilePage() {
-  const name = "Sakshi Agarwal"
+  const {user} = useAuth()
+  console.log(user?.displayName)
+
+  const name = user?.displayName
   const bio = "Just someone who loves designing, sketching, and finding beauty in the little things 💕"
-  const profileImage = "/placeholder.svg?height=112&width=112"
+  const profileImage = user?.photoURL
   const coverImage = "/placeholder.svg?height=300&width=800"
 
   return (
@@ -55,23 +63,30 @@ export default function ProfilePage() {
 
         {/* Profile Image */}
         <div className="absolute -bottom-14 left-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white">
-          <Image
-            src={profileImage}
-            alt={name}
-            fill
-            className="object-cover"
-            sizes="112px"
-          />
+        {user?.photoURL ? (
+              <img
+                src={user.photoURL}
+                alt="Profile"
+                width={50}
+                height={52}
+                className="rounded-full"
+              />
+            ) : (
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+            )}
         </div>
 
         {/* Edit Profile Button */}
         <div className="absolute -bottom-8 right-4">
+          <Link href='/edit_profile' legacyBehavior passHref>
           <Button
             variant="outline"
             className="rounded-full border-black/30 px-6 text-xs font-bold"
           >
             Edit Profile
           </Button>
+          </Link>
+          
         </div>
       </div>
 
