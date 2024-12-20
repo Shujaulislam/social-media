@@ -10,19 +10,19 @@ import { useAuth } from '@/lib/context/authContext/auth'
 
 const posts = [
   {
-    id:1,
+    id: 1,
     title: "Design meet",
     likes: 67,
     imageUrl: "/placeholder.svg?height=400&width=300",
   },
   {
-    id:2,
+    id: 2,
     title: "Working on a B2B...",
     likes: 40,
     imageUrl: "/placeholder.svg?height=400&width=300",
   },
   {
-    id:3,
+    id: 3,
     title: "Parachute ❤️",
     likes: 65,
     imageUrl: "/placeholder.svg?height=400&width=300",
@@ -30,7 +30,7 @@ const posts = [
 ]
 
 export default function ProfilePage() {
-  const {user} = useAuth()
+  const { user } = useAuth()
   console.log(user?.displayName)
 
   const name = user?.displayName
@@ -63,30 +63,30 @@ export default function ProfilePage() {
 
         {/* Profile Image */}
         <div className="absolute -bottom-14 left-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white">
-        {user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                alt="Profile"
-                width={50}
-                height={52}
-                className="rounded-full"
-              />
-            ) : (
-              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
-            )}
+          {user?.photoURL ? (
+            <img
+              src={user.photoURL}
+              alt="Profile"
+              width={50}
+              height={52}
+              className="rounded-full"
+            />
+          ) : (
+            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+          )}
         </div>
 
         {/* Edit Profile Button */}
         <div className="absolute -bottom-8 right-4">
           <Link href='/edit_profile' legacyBehavior passHref>
-          <Button
-            variant="outline"
-            className="rounded-full border-black/30 px-6 text-xs font-bold"
-          >
-            Edit Profile
-          </Button>
+            <Button
+              variant="outline"
+              className="rounded-full border-black/30 px-6 text-xs font-bold"
+            >
+              Edit Profile
+            </Button>
           </Link>
-          
+
         </div>
       </div>
 
@@ -112,12 +112,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Floating Action Button */}
-      <Button
-        size="icon"
-        className="fixed bottom-6 right-6 h-12 w-12 rounded-full bg-black shadow-lg hover:bg-black/90"
-      >
-        <Plus className="h-5 w-5 text-white" />
-      </Button>
+     
     </div>
   )
 }

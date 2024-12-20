@@ -97,9 +97,9 @@ export default function HomePage() {
           </div>
 
           {/* Login Buttons */}
-          <div className="flex flex-col gap-4">
+          <div className="flex  justify-center">
               <LoginButton />
-
+{/* 
             <Link href="/auth" className="w-full">
               <Button
                 variant="outline"
@@ -107,7 +107,7 @@ export default function HomePage() {
               >
                 Visit Auth Page
               </Button>
-            </Link>
+            </Link> */}
 
             {/* <div className="w-full">
               <AuthContextProvider>
