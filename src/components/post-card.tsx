@@ -24,7 +24,7 @@ export function PostCard({ post, index, total }: PostCardProps) {
           <AvatarFallback>{post.author?.name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div>
-          <p className="font-semibold">{post.author?.name || 'Anonymous'}</p>
+          <p className="font-semibold">{post.author?.name || 'sabir'}</p>
           <p className="text-sm text-gray-500">{formattedDate}</p>
         </div>
       </div>

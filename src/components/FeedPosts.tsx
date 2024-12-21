@@ -8,8 +8,10 @@ import { cn } from "@/lib/utils"
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Post } from '@/lib/firebse/posts'
+import { useAuth } from '@/lib/context/authContext/auth'
 
 export function FeedPosts({ post }: { post: Post }) {
+  const {user} = useAuth()
   const [liked, setLiked] = useState(false)
 
   const formattedDate = post.timestamp 
@@ -24,7 +26,7 @@ export function FeedPosts({ post }: { post: Post }) {
           <AvatarFallback>{post.author?.name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-semibold">{post.author?.name || 'Anonymous'}</span>
+          <span className="font-semibold">{user?.displayName || 'Anonymous'}</span>
           <span className="text-sm text-muted-foreground">{formattedDate}</span>
         </div>
       </CardHeader>
@@ -32,10 +34,10 @@ export function FeedPosts({ post }: { post: Post }) {
       <CardContent className="p-0">
         {post.media && (
           <div className="relative aspect-square">
-            <Image
+            <img
               src={post.media}
               alt={post.message}
-              fill
+            
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

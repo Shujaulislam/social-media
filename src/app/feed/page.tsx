@@ -12,6 +12,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 export default function Feed() {
+
+  // const {check} = getAllPosts()
+  // const name = check.email
+  // console.log(name)
   const { user, handleLogout } = useAuth();
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);

@@ -14,6 +14,8 @@ import { AlertCircle } from 'lucide-react'
 
 export default function ProfilePage() {
   const { user } = useAuth()
+  const name = user?.displayName
+ 
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
