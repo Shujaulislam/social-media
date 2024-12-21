@@ -26,14 +26,14 @@ export function FeedPosts({ post }: { post: Post }) {
           <AvatarFallback>{post.author?.name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-semibold">{user?.displayName || 'Anonymous'}</span>
+          <span className="font-semibold">{post.author?.name || 'Anonymous'}</span>
           <span className="text-sm text-muted-foreground">{formattedDate}</span>
         </div>
       </CardHeader>
 
       <CardContent className="p-0">
         {post.media && (
-          <div className="relative aspect-square">
+          <div className="relative">
             <img
               src={post.media}
               alt={post.message}
@@ -44,7 +44,7 @@ export function FeedPosts({ post }: { post: Post }) {
           </div>
         )}
         <div className="p-4">
-          <p className="text-sm">{post.message}</p>
+          <p className="text-xl">{post.message}</p>
         </div>
       </CardContent>
 

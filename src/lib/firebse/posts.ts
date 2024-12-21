@@ -25,7 +25,7 @@ export interface Post {
 }
 
 // Function to fetch author details by UID
-async function getUserDetails(uid: string): Promise<{ name: string; photoURL: string; email: string } | undefined> {
+export async function getUserDetails(uid: string): Promise<{ name: string; photoURL: string; email: string } | undefined> {
   try {
     const userDocRef = doc(db, 'admins', uid); // Querying from 'admins' collection
     const userDoc = await getDoc(userDocRef);
