@@ -15,6 +15,7 @@ import { AlertCircle } from 'lucide-react'
 export default function ProfilePage() {
   const { user } = useAuth()
   const name = user?.displayName
+  console.log('Current user:', user?.uid, name)
  
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
@@ -25,12 +26,18 @@ export default function ProfilePage() {
 
   useEffect(() => {
     async function fetchUserPosts() {
-      if (!user?.uid) return
+      if (!user?.uid) {
+        console.log('No user UID available')
+        setLoading(false)
+        return
+      }
 
       try {
         setLoading(true)
         setError(null)
+        console.log('Fetching posts for user:', user.uid)
         const userPosts = await getUserPosts(user.uid)
+        console.log('Posts fetched successfully:', userPosts.length)
         setPosts(userPosts)
       } catch (err) {
         console.error('Error fetching user posts:', err)

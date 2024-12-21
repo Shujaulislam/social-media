@@ -1,18 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Heart, MessageCircle, Share2 } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
-import { Post } from '@/lib/firebse/posts'
+import { Post ,getUserDetails} from '@/lib/firebse/posts'
 import { useAuth } from '@/lib/context/authContext/auth'
 
-export function FeedPosts({ post }: { post: Post }) {
+export function FeedPosts({ post }: { post: Post}  ) {
   const {user} = useAuth()
   const [liked, setLiked] = useState(false)
+  const [authorDetails, setAuthorDetails] = useState(post.author)
+
+  useEffect(() => {
+    const fetchAuthorDetails = async () => {
+      console.log(`Hello`);
+      if (user?.uid && (!user?.photoURL )) {
+        const details = await getUserDetails(user.uid);
+        if (details) {
+         
+          setAuthorDetails(details);
+          console.log(`Author photo URL: ${details.name}`);
+        }
+      }
+    };
+    
+    fetchAuthorDetails();
+  }, [user?.uid]);
 
   const formattedDate = post.timestamp 
     ? formatDistanceToNow(post.timestamp.toDate(), { addSuffix: true })
@@ -22,11 +39,11 @@ export function FeedPosts({ post }: { post: Post }) {
     <Card className="w-full max-w-2xl mx-auto overflow-hidden rounded-xl bg-white shadow-sm">
       <CardHeader className="flex flex-row items-center gap-3 p-4">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={post.author?.photoURL} />
-          <AvatarFallback>{post.author?.name?.[0] || 'U'}</AvatarFallback>
+          <AvatarImage src={authorDetails?.photoURL} />
+          <AvatarFallback>{authorDetails?.name?.[0] || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-semibold">{post.author?.name || 'Anonymous'}</span>
+          <span className="font-semibold">{authorDetails?.name || 'Anonymous'}</span>
           <span className="text-sm text-muted-foreground">{formattedDate}</span>
         </div>
       </CardHeader>
@@ -37,7 +54,6 @@ export function FeedPosts({ post }: { post: Post }) {
             <img
               src={post.media}
               alt={post.message}
-            
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

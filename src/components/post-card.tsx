@@ -31,10 +31,10 @@ export function PostCard({ post, index, total }: PostCardProps) {
 
       {/* Media Section */}
       <div className="relative aspect-square">
-        <Image
+        <img
           src={post.media || "/placeholder.svg"}
           alt={post.message}
-          fill
+          // fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />

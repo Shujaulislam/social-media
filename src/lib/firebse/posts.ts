@@ -83,32 +83,34 @@ export async function getAllPosts(): Promise<Post[]> {
 // Function to fetch posts by a specific user
 export async function getUserPosts(userId: string): Promise<Post[]> {
   try {
-    const postsRef = collection(db, 'post'); // Fetching from 'post' collection
+    console.log('Fetching posts for user ID:', userId);
+    const postsRef = collection(db, 'post');
     const q = query(
       postsRef,
       where('uid', '==', userId),
       orderBy('timestamp', 'desc')
-    ); // Query posts for the given user in descending order by timestamp
+    );
+    
     const querySnapshot = await getDocs(q);
+    console.log('Found posts:', querySnapshot.size);
 
-    const posts: Post[] = [];
-    for (const doc of querySnapshot.docs) {
-      const postData = doc.data() as Omit<Post, 'id'>;
-
-      // Fetch author details
-      const author = await getUserDetails(userId);
-      if (!author) {
-        console.warn(`No author details found for UID: ${userId}`);
-      } else {
-        console.log(`Author details fetched for UID: ${userId}`, author);
-      }
-
-      posts.push({
-        id: doc.id,
-        ...postData,
-        author: author || null, // Attach author details or set null if not found
-      });
+    // Fetch author details once
+    const author = await getUserDetails(userId);
+    if (!author) {
+      console.warn(`No author details found for UID: ${userId}`);
     }
+
+    const posts: Post[] = querySnapshot.docs.map(doc => {
+      const postData = doc.data();
+      return {
+        id: doc.id,
+        uid: userId,
+        message: postData.message || '',
+        media: postData.media || '',
+        timestamp: postData.timestamp,
+        author: author || null
+      };
+    });
 
     return posts;
   } catch (error) {
