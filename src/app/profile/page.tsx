@@ -1,42 +1,56 @@
 "use client"
 
-import { ArrowLeft, Plus } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { PostCard } from '@/components/post-card' // this is temporary replace this with actual dynamic post file wherever you are going to create it.
+import { PostCard } from '@/components/post-card'
 import Link from 'next/link'
 import { useAuth } from '@/lib/context/authContext/auth'
-
-
-const posts = [
-  {
-    id: 1,
-    title: "Design meet",
-    likes: 67,
-    imageUrl: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 2,
-    title: "Working on a B2B...",
-    likes: 40,
-    imageUrl: "/placeholder.svg?height=400&width=300",
-  },
-  {
-    id: 3,
-    title: "Parachute ❤️",
-    likes: 65,
-    imageUrl: "/placeholder.svg?height=400&width=300",
-  },
-]
+import { useEffect, useState } from 'react'
+import { Post, getUserPosts } from '@/lib/firebse/posts'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 
 export default function ProfilePage() {
   const { user } = useAuth()
-  console.log(user?.displayName)
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const name = user?.displayName
   const bio = "Just someone who loves designing, sketching, and finding beauty in the little things 💕"
-  const profileImage = user?.photoURL
   const coverImage = "/placeholder.svg?height=300&width=800"
+
+  useEffect(() => {
+    async function fetchUserPosts() {
+      if (!user?.uid) return
+
+      try {
+        setLoading(true)
+        setError(null)
+        const userPosts = await getUserPosts(user.uid)
+        setPosts(userPosts)
+      } catch (err) {
+        console.error('Error fetching user posts:', err)
+        setError('Failed to load your posts. Please try again later.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserPosts()
+  }, [user?.uid])
+
+  if (!user) {
+    return (
+      <div className="flex min-h-[80vh] flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold">Please log in to view your profile</h1>
+        <Link href="/" className="mt-4 text-blue-500 hover:underline">
+          Go to Home
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white pb-20">
@@ -52,68 +66,102 @@ export default function ProfilePage() {
             sizes="100vw"
             priority
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute left-4 top-6 text-white"
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </Button>
+          <Link href="/feed">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute left-4 top-6 text-white hover:bg-black/20"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+          </Link>
         </div>
 
         {/* Profile Image */}
-        <div className="absolute -bottom-14 left-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white">
+        <div className="absolute -bottom-14 left-4 h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-white">
           {user?.photoURL ? (
-            <img
+            <Image
               src={user.photoURL}
               alt="Profile"
-              width={50}
-              height={52}
-              className="rounded-full"
+              width={112}
+              height={112}
+              className="h-full w-full object-cover"
             />
           ) : (
-            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+            <div className="h-full w-full bg-gray-200" />
           )}
         </div>
 
         {/* Edit Profile Button */}
         <div className="absolute -bottom-8 right-4">
-          <Link href='/edit_profile' legacyBehavior passHref>
+          <Link href="/profile/edit_profile">
             <Button
               variant="outline"
-              className="rounded-full border-black/30 px-6 text-xs font-bold"
+              className="rounded-full border-black/30 px-6 text-xs font-bold hover:bg-gray-100"
             >
               Edit Profile
             </Button>
           </Link>
-
         </div>
       </div>
 
       {/* Profile Info */}
       <div className="mt-16 px-4">
-        <h1 className="mb-2 text-2xl font-extrabold">{name}</h1>
+        <h1 className="mb-2 text-2xl font-extrabold">{user.displayName}</h1>
         <p className="text-sm text-gray-800">{bio}</p>
       </div>
+
+      {/* Error State */}
+      {error && (
+        <div className="mx-4 mt-8">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
+      )}
 
       {/* Posts Section */}
       <div className="mt-8 px-4">
         <h2 className="mb-4 text-lg font-semibold">My Posts</h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {posts.map((post, index) => (
-            <PostCard
-              key={post.title}
-              {...post}
-              index={index}
-              total={posts.length}
-            />
-          ))}
-        </div>
-      </div>
+        
+        {/* Loading State */}
+        {loading && (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="space-y-3">
+                <Skeleton className="aspect-square rounded-xl" />
+                <Skeleton className="h-4 w-[80%]" />
+                <Skeleton className="h-4 w-[60%]" />
+              </div>
+            ))}
+          </div>
+        )}
 
-      {/* Floating Action Button */}
-     
+        {/* Posts Grid */}
+        {!loading && (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {posts.map((post, index) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                index={index}
+                total={posts.length}
+              />
+            ))}
+            {posts.length === 0 && !error && (
+              <div className="col-span-full text-center py-10">
+                <p className="text-gray-500">No posts yet. Start sharing your moments!</p>
+                <Link href="/create-post">
+                  <Button className="mt-4" variant="outline">
+                    Create Your First Post
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
-
